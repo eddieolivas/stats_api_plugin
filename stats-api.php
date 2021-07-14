@@ -77,6 +77,7 @@ function check_stats_for_updates() {
     ));
     $context  = stream_context_create($options);
 
+    // Check the response for each location to see if it's been updated. If so, update the location data in the WordPress database
     foreach( $locationIds as $locationId ) {
         $api_url = 'https://covid-stats-distribution-api.herokuapp.com/locations/' . $locationId;
         $response = file_get_contents($api_url, false, $context);
@@ -88,7 +89,7 @@ function check_stats_for_updates() {
     }
 }
 
-// Add an every 5 minute schedule to the cron schedules
+// Add an every 30 minute schedule to the cron schedules
 add_filter( 'cron_schedules', 'add_thirty_minute_cron_interval' );
 function add_thirty_minute_cron_interval( $schedules ) { 
     $schedules['thirty_minutes'] = array(
